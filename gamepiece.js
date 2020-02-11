@@ -92,16 +92,15 @@ gamepiece.prototype.fly = function(){
         this.velx /= friction;
     }
     if(keys[32] && canfire){
-            keys[32] = false;
-            canfire = false;
-            slug("bullet", this.x + 85, this.y + 30, 5, 3, 14,0);
-            setTimeout(function() {
-            //your code to be executed after 1 second
-            canfire = true;
-          }, 200);
-        }
+        keys[32] = false;
+        canfire = false;
+        slug("bullet", this.x + 85, this.y + 30, 5, 3, 14,0);
+        setTimeout(function() {
+        //your code to be executed after 1 second
+        canfire = true;
+        }, 200);
+    }
         
-    
     this.x += this.velx;
     this.y += this.vely;
     this.velx *= friction;

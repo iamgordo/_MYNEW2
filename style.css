@@ -9,7 +9,9 @@ canvas {
 }
 #gameArea{
   visibility: block;
+  position: absolute;
 }
 #gameDialogue{
+  position: absolute;
   visibility: hidden;
 }

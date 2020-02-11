@@ -96,15 +96,13 @@ function update () {
                     wavecount = 0;
                     wavechange = true;
                     if(wavechange && wave === 2){
-                        // biplanes = []
-                        wavechange = false;
+                        setTimeout(timesup, 2000);
                         oneenemy = new enemy("fireball", 1400, 200, 66, 18, -6, 0);
-                        twoenemy = new enemy("fireball", 1000, 100, 66, 18, -6, 0);
-                        threeenemy = new enemy("fireball", 1700, 300, 66, 18, -6, 0);
-                        fourenemy = new enemy("fireball", 2000, 400, 66, 18, -6, 0);
+                        twoenemy = new enemy("fireball", 1600, 100, 66, 18, -6, 0);
+                        threeenemy = new enemy("fireball", 2000, 300, 66, 18, -6, 0);
+                        fourenemy = new enemy("fireball", 2400, 400, 66, 18, -6, 0);
                     }
                 }
-
             }
         }
     }
@@ -118,14 +116,21 @@ function update () {
         twoenemy.update();
         threeenemy.update();
         fourenemy.update();
+        // if(chopper.collision(oneenemy))console.log("HIT");
     }
     ground1.move();
     ground2.move();
     ground3.move();
     wall1.move();
+    if(chopper.collision(wall1)){
+        console.log("wall");
+        
+    }
     chopper.checkborder();
-    // if(chopper.collision(oneenemy))console.log("HIT");
     chopper.fly();
+}
+function timesup(){
+    wavechange = false;
 }
 function draw () {
     ground1.draw(canvasContext);
@@ -140,6 +145,7 @@ function draw () {
     }
     
     chopper.draw(canvasContext);
+    if(wavechange)screentext.show("Wave: " + wave, "#ffff00", "bold 30px Tahoma", "center", canvas.width / 2, canvas.height / 2 - 200);
     for(let i = 0; i < bullets.length; i++){
         canvasContext.drawImage(aslug, bullets[i].x, bullets[i].y);
     }
