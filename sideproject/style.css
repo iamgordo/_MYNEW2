@@ -1,0 +1,15 @@
+body {
+  margin: 40px auto;
+  text-align: center;
+  background-color: rgb(105, 2, 2);
+}
+canvas {
+  border: 1px solid #720308;
+  background-color: black;
+}
+#gameArea{
+  visibility: block;
+}
+#gameDialogue{
+  visibility: hidden;
+}
