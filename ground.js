@@ -22,3 +22,11 @@ ground.prototype.draw = function(ctx){
         this.x = 1000;
     }
 }
+ground.prototype.collide = function(bodyb){
+    if (this.x < bodyb.x + bodyb.width &&
+        this.x + this.width > bodyb.x &&
+        this.y < bodyb.y + bodyb.height &&
+        this.y + this.height > bodyb.y) {
+        return true;
+     }else return false;
+}
