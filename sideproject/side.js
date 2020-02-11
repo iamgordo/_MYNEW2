@@ -6,13 +6,12 @@ var canvasContext = undefined;
 function start () {
     canvas = document.getElementById("myCanvas");
     canvasContext = canvas.getContext("2d");
-    
+
     screenarea =document.getElementById("gameArea");
     screenarea.addEventListener('click', init);
 }
 function init(e){
     screenarea.removeEventListener('click', init);
-    chopper.startkeyboard();
     gameLoop();
 }
 document.addEventListener( 'DOMContentLoaded', start);
