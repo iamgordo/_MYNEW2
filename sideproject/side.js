@@ -3,7 +3,7 @@ var canvasContext = undefined;
 
 var fireball = new Image();
 fireball.src = "./img/fireball.png";
-var ball = new newimage(fireball, 100, 200, 75, 20, 1, 1);
+var ball = new newimage(fireball, 800, 200, 75, 20, -1, 0);
 
 
 function start () {
@@ -21,9 +21,8 @@ function init(e){
 document.addEventListener( 'DOMContentLoaded', start);
 // cant do inertia, head swimming
 function update () {
-    ball.x -= ball.speedx;
-    ball.y += ball.s
-    peedy;
+    ball.x += ball.speedx;
+    ball.y += ball.speedy;
 }
 function draw(){
     // canvasContext.drawImage(fireball, 200, 200, 75, 20);

@@ -98,7 +98,7 @@ gamepiece.prototype.fly = function(){
             setTimeout(function() {
             //your code to be executed after 1 second
             canfire = true;
-          }, 300);
+          }, 200);
         }
         
     

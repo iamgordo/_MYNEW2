@@ -1,16 +1,17 @@
 var canvas = undefined;
 var canvasContext = undefined;
 
-var engine = Matter.Engine.create();
 var player;
 let bullets = [];
 let enemies = [];
 let biplanes = [];
 var oneenemy, twoenemy, threeenemy;
-var ground1, ground2, ground3, bullet;
+var ground1, ground2, ground3, bullet, wall1, wall2, wall3;
 var screenarea;
-let wave = 1;
 let state = "play";
+let wave = 1;
+let wavecount = 0;
+let wavechange = false;
 
 var aslug = new Image();
 aslug.src = ("./img/bullet.png");
@@ -28,12 +29,14 @@ function start () {
     screenarea =document.getElementById("gameArea");
 
 
-    chopper = new gamepiece("", 300, 150, 104, 33, .08, .08);
+    chopper = new gamepiece("", 300, 150, 104, 33, .15, .15);
     chopper.addimage("heli-1a");
 
     ground1 = new ground("mountain", 900, 430, 498, 163, -0.8);
     ground2 = new ground("mountain", 1500, 460, 498, 163, -0.8);
     ground3 = new ground("mountain", 1900, 420, 498, 163, -0.8);
+
+    wall1 = new ground("wallmine", 950, 493, 100, 100, -0.8);
 
     if(wave === 2){
         oneenemy = new enemy("fireball", 300, 200, 66, 18, -6, 0);
@@ -42,7 +45,7 @@ function start () {
     }
     if(wave === 1){
         for(let i = 0; i < 5; i++){
-            let thisplane = new biplane(images, 800 + i * 200, Math.random()*400 + 50, 73, 37, -5, 0);
+            let thisplane = new biplane(images, 800 + i * 200, Math.random()*400 + 50, 73, 37, -4, 0);
         }
     }
     screenarea.addEventListener('click', init);
@@ -59,18 +62,48 @@ function update () {
     for(let i = 0; i < biplanes.length; i++){
         let thisbiplane = biplanes[i];
         if(thisbiplane.x < 0 - thisbiplane.width){
-            thisbiplane.x = 1200;
+            thisbiplane.x = 1000;
             thisbiplane.y = Math.random()*400;
+            if(wave === 2)biplanes.splice(i,1)
+        }
+        
+        // after crash and burn, recycle plane
+        if(thisbiplane.y > canvas.height + thisbiplane.height){
+            // biplanes.splice(i,1);
+            // let thisplane = new biplane(images, 1000, Math.random()*400 + 50, 73, 37, -5, 0);
+            if(wave === 1){
+                thisbiplane.x = 900;
+                thisbiplane.y = Math.random()*400 + 50;
+                thisbiplane.speedx = -4;
+                thisbiplane.speedy = 0;
+            }else
+            
         }
         thisbiplane.x += thisbiplane.speedx;
         thisbiplane.y += thisbiplane.speedy;
         for(let j = 0; j < bullets.length; j++){
             let thisslug = bullets[j];
             if(checkCollision(thisbiplane, thisslug)){
-                // console.log("hit " + i);
                 bullets.splice(j, 1);
-                // need to 
-                biplanes.splice(i, 1);
+                // biplanes.splice(i, 1);
+                biplanes[i].speedy = 6;
+                biplanes[i].speedx = -2;
+                wavecount += 1;
+                console.log(wavecount);
+                if(wavecount > 5){
+                    console.log("wavechange");
+                    wave+=1;
+                    wavecount = 0;
+                    wavechange = true;
+                    if(wavechange && wave === 2){
+                        // biplanes = []
+                        wavechange = false;
+                        oneenemy = new enemy("fireball", 1400, 200, 66, 18, -6, 0);
+                        twoenemy = new enemy("fireball", 1000, 100, 66, 18, -6, 0);
+                        threeenemy = new enemy("fireball", 1700, 300, 66, 18, -6, 0);
+                    }
+                }
+
             }
         }
     }
@@ -82,6 +115,7 @@ function update () {
     if(wave === 2){
         oneenemy.update();
         twoenemy.update();
+        threeenemy.update();
     }
     ground1.move();
     ground2.move();
@@ -97,6 +131,7 @@ function draw () {
     if(wave === 2){
         oneenemy.draw(canvasContext);
         twoenemy.draw(canvasContext);
+        threeenemy.draw(canvasContext);
     }
     
     chopper.draw(canvasContext);
