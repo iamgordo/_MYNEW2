@@ -22,12 +22,12 @@ enemy.prototype.update = function(){
             this.x += this.speedx;
         }else{
             wavecount += 1;
-            console.log(wavecount);
+            // console.log(wavecount);
             this.x = 850;
             this.y = Math.random()*470 + 20;
             if(wavecount > 20){
-                
-                console.log("wave 3");
+                wave += 1;
+                // console.log("wave: " + wave);
                 wavecount = 0;
             }
         }
@@ -41,29 +41,7 @@ enemy.prototype.isColliding = function(bodyb){
         this.y < bodyb.y + bodyb.height &&
         this.y + this.height > bodyb.y) {
         return true;
-     }else return false;
-}
-enemy.dialogue = function(){
-    let gameScreen = document.getElementById('gameArea');
-    let gameOver = document.getElementById('gameDialogue');
-    gameScreen.style.display = "none";
-    gameOver.style.display = "block";
-
-    document.removeEventListener('keydown', function(e) {
-        keys[e.which] = true;
-        // e.preventDefault();
-    });
-    document.removeEventListener('keyup', function(e) {
-        keys[e.which] = false;
-    });
-    // setTimeout(endgame, 4000);
-}
-function endgame(){
-    engine.events = {}
-    render.canvas.remove();
-    render.canvas = null;
-    render.context = null;
-    render.textures = {};
-    location.reload();
-    start();
-}
+     }else {
+         return false;
+        }
+    }

@@ -41,7 +41,7 @@ function start () {
 
     wall1 = new ground("wallmine", 1050, 493, 100, 100, -0.8);
 
-    fuel = new ground("fuel2", 850, 540, 57, 37, -0.8);
+    fuel = new ground("fuel2", 850, 545, 57, 37, -0.8);
     
     if(wave === 1){
         for(let i = 0; i < 5; i++){
@@ -68,10 +68,10 @@ function update () {
                 biplanes.splice(i,1);
             }else {
                 wavecount += 1;
-                console.log(wavecount);
             }
         }
         if(wavecount > 10){
+            // wavechange from within biplanes only
             wave+=1;
             wavecount = 0;
             wavechange = true;
@@ -84,6 +84,7 @@ function update () {
                 fiveenemy = new enemy("fireball", 2800, 300, 66, 18, -6, 0);
                 sixenemy = new enemy("fireball", 3000, 300, 66, 18, -6, 0);
             }
+
         }
         // after crash and burn, recycle plane
         if(thisbiplane.y > canvas.height + thisbiplane.height){
@@ -96,7 +97,6 @@ function update () {
             }else if(wave ===2){
                 biplanes.splice(i, 1);
             }
-            
         }
         thisbiplane.x += thisbiplane.speedx;
         thisbiplane.y += thisbiplane.speedy;
@@ -106,22 +106,7 @@ function update () {
                 bullets.splice(j, 1);
                 // biplanes.splice(i, 1);
                 biplanes[i].speedy = 6;
-                biplanes[i].speedx = -2;
-                // wavecount += 1;
-                // if(wavecount > 5){
-                //     wave+=1;
-                //     wavecount = 0;
-                //     wavechange = true;
-                //     if(wavechange && wave === 2){
-                //         setTimeout(timesup, 2000);
-                //         oneenemy = new enemy("fireball", 1800, 200, 66, 18, -6, 0);
-                //         twoenemy = new enemy("fireball", 2000, 100, 66, 18, -6, 0);
-                //         threeenemy = new enemy("fireball", 2200, 300, 66, 18, -6, 0);
-                //         fourenemy = new enemy("fireball", 2400, 400, 66, 18, -6, 0);
-                //         fiveenemy = new enemy("fireball", 2600, 300, 66, 18, -6, 0);
-                //         sixenemy = new enemy("fireball", 2800, 300, 66, 18, -6, 0);
-                //     }
-                // }
+                biplanes[i].speedx = -1;
             }
         }
     }
@@ -136,6 +121,12 @@ function update () {
         threeenemy.update();
         fourenemy.update();
         fiveenemy.update();
+        if(oneenemy.isColliding(chopper) || twoenemy.isColliding(chopper) || threeenemy.isColliding(chopper) || fourenemy.isColliding(chopper) || fiveenemy.isColliding(chopper)){
+            console.log("hit fireball");
+            state = "gover";
+            screentext.show("Game Over", "#ffff00", "bold 30px Tahoma", "center", canvas.width / 2, canvas.height / 2 - 200);
+            setTimeout(gameover, 3000);
+        }
         // if(chopper.collision(oneenemy))console.log("HIT");
     }
     ground1.move();
@@ -161,6 +152,7 @@ function gameover(){
 
 }
 function newgame(){
+    state = "play";
     window.location.reload();
 }
 function timesup(){
@@ -179,7 +171,11 @@ function draw () {
         fourenemy.draw(canvasContext);
         fiveenemy.draw(canvasContext);
     }
-    
+    if(wave === 3){
+        console.log(wave + "wave");
+        
+    }
+
     chopper.draw(canvasContext);
     if(wavechange)screentext.show("Wave: " + wave, "#ffff00", "bold 30px Tahoma", "center", canvas.width / 2, canvas.height / 2 - 200);
     for(let i = 0; i < bullets.length; i++){
