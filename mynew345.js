@@ -6,8 +6,8 @@ let bullets = [];
 let enemies = [];
 let biplanes = [];
 var oneenemy, twoenemy, threeenemy, fourenemy;
-var ground1, ground2, ground3, bullet, wall1, wall2, wall3;
-var screenarea;
+var ground1, ground2, ground3, bullet, wall1, wall2, wall3, fuel;
+var screenarea, dialogue;
 let state = "play";
 let wave = 1;
 let wavecount = 0;
@@ -15,18 +15,21 @@ let wavechange = false;
 
 var aslug = new Image();
 aslug.src = ("./img/bullet.png");
+
 var images = {
     biplane: new Image(),
+    fuel: new Image(),
 }
 
 function start () {
     images.biplane.src = ("./img/Biplane.png");
+    images.fuel.src = ("./img/fuel.png");
 
     canvas = document.getElementById("myCanvas");
     canvasContext = canvas.getContext("2d");
     screentext.show("Click to start!!", "#ff9900", "bold 60px Tahoma", "center", canvas.width / 2, canvas.height / 2);
     screentext.show("Wave: " + wave, "#ffff00", "bold 40px Tahoma", "center", canvas.width / 2, canvas.height / 2 + 100);
-    screenarea =document.getElementById("gameArea");
+    screenarea = document.getElementById("gameArea");
 
 
     chopper = new gamepiece("", 300, 150, 104, 33, .15, .15);
@@ -38,11 +41,8 @@ function start () {
 
     wall1 = new ground("wallmine", 1050, 493, 100, 100, -0.8);
 
-    // if(wave === 2){
-    //     oneenemy = new enemy("fireball", 300, 200, 66, 18, -6, 0);
-    //     twoenemy = new enemy("fireball", 1000, 100, 66, 18, -6, 0);
-    //     threeenemy = new enemy("fireball", 1700, 300, 66, 18, -6, 0);
-    // }
+    fuel = new ground("fuel", 850, 540, 63, 39, -0.8);
+    
     if(wave === 1){
         for(let i = 0; i < 5; i++){
             let thisplane = new biplane(images, 800 + i * 200, Math.random()*400 + 50, 73, 37, -4, 0);
@@ -122,12 +122,28 @@ function update () {
     ground2.move();
     ground3.move();
     wall1.move();
+    fuel.move();
+
     if(chopper.collision(wall1)){
-        console.log("wall");
-        
+        state = "gover";
+        screentext.show("Game Over", "#ffff00", "bold 30px Tahoma", "center", canvas.width / 2, canvas.height / 2 - 200);
+        // screentext.show("Click to play again", "#ffff00", "bold 30px Tahoma", "center", canvas.width / 2, canvas.height / 2 - 100);
+        setTimeout(gameover, 3000);
     }
     chopper.checkborder();
     chopper.fly();
+}
+function gameover(){
+    screenarea.style.display = "none";
+    dialogue = document.getElementById("gameDialogue");
+//     dialogue.style.display = "block";
+    dialogue.style.visibility = "visible";
+    dialogue.addEventListener('click', newgame);
+    // console.log("made it");
+
+}
+function newgame(){
+    window.location.reload();
 }
 function timesup(){
     wavechange = false;
@@ -137,6 +153,7 @@ function draw () {
     ground2.draw(canvasContext);
     ground3.draw(canvasContext);
     wall1.draw(canvasContext);
+    fuel.draw(canvasContext);
     if(wave === 2){
         oneenemy.draw(canvasContext);
         twoenemy.draw(canvasContext);

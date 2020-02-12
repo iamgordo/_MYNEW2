@@ -1,17 +1,22 @@
 body {
-  margin: 40px auto;
+  margin: 30px auto;
   text-align: center;
-  background-color: rgb(102, 102, 102);
+  background-color: rgb(26, 0, 0);
 }
 canvas {
   border: 1px solid #c0000a;
   background-color: black;
 }
 #gameArea{
-  visibility: block;
-  position: absolute;
+	visibility: block;
+	position: absolute;
+	margin-left: 40px;
 }
 #gameDialogue{
+  font-size: 100px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  margin-left: 80px;
+  color:  #ffee00;
   position: absolute;
   visibility: hidden;
 }
