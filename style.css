@@ -8,15 +8,17 @@ canvas {
   background-color: black;
 }
 #gameArea{
-	visibility: block;
+	visibility:visible;
 	position: absolute;
 	margin-left: 40px;
 }
 #gameDialogue{
-  font-size: 100px;
+  line-height: 20px;
+  font-size: 70px;
   font-family: "Comic Sans MS", cursive, sans-serif;
   margin-left: 80px;
   color:  #ffee00;
   position: absolute;
+  text-align: center;
   visibility: hidden;
 }
