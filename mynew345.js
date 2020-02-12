@@ -5,7 +5,7 @@ var player;
 let bullets = [];
 let enemies = [];
 let biplanes = [];
-var oneenemy, twoenemy, threeenemy, fourenemy, fiveenemy;
+var oneenemy, twoenemy, threeenemy, fourenemy, fiveenemy, sixenemy;
 var ground1, ground2, ground3, bullet, wall1, wall2, wall3, fuel;
 var screenarea, dialogue;
 let state = "play";
@@ -27,8 +27,8 @@ function start () {
 
     canvas = document.getElementById("myCanvas");
     canvasContext = canvas.getContext("2d");
-    screentext.show("Click to start!!", "#ff9900", "bold 60px Tahoma", "center", canvas.width / 2, canvas.height / 2);
-    screentext.show("Wave: " + wave, "#ffff00", "bold 40px Tahoma", "center", canvas.width / 2, canvas.height / 2 + 100);
+    screentext.show("Click to start!!", "#ff9900", "bold 60px Tahoma", "center", canvas.width / 2, canvas.height / 3);
+    screentext.show("Wave: " + wave, "#ffff00", "bold 40px Tahoma", "center", canvas.width / 2, canvas.height / 3 + 100);
     screenarea = document.getElementById("gameArea");
 
 
@@ -64,18 +64,35 @@ function update () {
         if(thisbiplane.x < 0 - thisbiplane.width){
             thisbiplane.x = 1000;
             thisbiplane.y = Math.random()*400;
-            if(wave === 2)biplanes.splice(i,1)
+            if(wave === 2){
+                biplanes.splice(i,1);
+            }else {
+                wavecount += 1;
+                console.log(wavecount);
+            }
         }
-        
+        if(wavecount > 10){
+            wave+=1;
+            wavecount = 0;
+            wavechange = true;
+            if(wavechange && wave === 2){
+                setTimeout(timesup, 2000);
+                oneenemy = new enemy("fireball", 2000, 200, 66, 18, -6, 0);
+                twoenemy = new enemy("fireball", 2200, 100, 66, 18, -6, 0);
+                threeenemy = new enemy("fireball", 2400, 300, 66, 18, -6, 0);
+                fourenemy = new enemy("fireball", 2600, 400, 66, 18, -6, 0);
+                fiveenemy = new enemy("fireball", 2800, 300, 66, 18, -6, 0);
+                sixenemy = new enemy("fireball", 3000, 300, 66, 18, -6, 0);
+            }
+        }
         // after crash and burn, recycle plane
         if(thisbiplane.y > canvas.height + thisbiplane.height){
-            // biplanes.splice(i,1);
-            // let thisplane = new biplane(images, 1000, Math.random()*400 + 50, 73, 37, -5, 0);
             if(wave === 1){
                 thisbiplane.x = 900;
                 thisbiplane.y = Math.random()*400 + 50;
                 thisbiplane.speedx = -4;
                 thisbiplane.speedy = 0;
+                wavecount += 1;
             }else if(wave ===2){
                 biplanes.splice(i, 1);
             }
@@ -90,21 +107,21 @@ function update () {
                 // biplanes.splice(i, 1);
                 biplanes[i].speedy = 6;
                 biplanes[i].speedx = -2;
-                wavecount += 1;
-                console.log(wavecount);
-                if(wavecount > 5){
-                    wave+=1;
-                    wavecount = 0;
-                    wavechange = true;
-                    if(wavechange && wave === 2){
-                        setTimeout(timesup, 2000);
-                        oneenemy = new enemy("fireball", 1400, 200, 66, 18, -6, 0);
-                        twoenemy = new enemy("fireball", 1600, 100, 66, 18, -6, 0);
-                        threeenemy = new enemy("fireball", 2000, 300, 66, 18, -6, 0);
-                        fourenemy = new enemy("fireball", 2400, 400, 66, 18, -6, 0);
-                        fiveenemy = new enemy("fireball", 1800, 300, 66, 18, -6, 0);
-                    }
-                }
+                // wavecount += 1;
+                // if(wavecount > 5){
+                //     wave+=1;
+                //     wavecount = 0;
+                //     wavechange = true;
+                //     if(wavechange && wave === 2){
+                //         setTimeout(timesup, 2000);
+                //         oneenemy = new enemy("fireball", 1800, 200, 66, 18, -6, 0);
+                //         twoenemy = new enemy("fireball", 2000, 100, 66, 18, -6, 0);
+                //         threeenemy = new enemy("fireball", 2200, 300, 66, 18, -6, 0);
+                //         fourenemy = new enemy("fireball", 2400, 400, 66, 18, -6, 0);
+                //         fiveenemy = new enemy("fireball", 2600, 300, 66, 18, -6, 0);
+                //         sixenemy = new enemy("fireball", 2800, 300, 66, 18, -6, 0);
+                //     }
+                // }
             }
         }
     }
@@ -139,10 +156,8 @@ function update () {
 function gameover(){
     screenarea.style.display = "none";
     dialogue = document.getElementById("gameDialogue");
-//     dialogue.style.display = "block";
     dialogue.style.visibility = "visible";
     dialogue.addEventListener('click', newgame);
-    // console.log("made it");
 
 }
 function newgame(){

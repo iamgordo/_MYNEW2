@@ -1,7 +1,7 @@
 
 "use strict"
 
-
+// need to produce mechanism that changes graphix and behavior due to wave change
 function enemy(imagename, x, y, width, height, speedx, speedy){
     this.img = new Image();
     this.img.src = "./img/" + imagename + ".png";
@@ -23,13 +23,14 @@ enemy.prototype.update = function(){
         }else{
             wavecount += 1;
             console.log(wavecount);
-            // beginning of game pause/dialogue
-            // state = "pause";
-            // enemy.dialogue();
             this.x = 850;
-            this.y = Math.random()*350 + 75;
+            this.y = Math.random()*470 + 20;
+            if(wavecount > 20){
+                
+                console.log("wave 3");
+                wavecount = 0;
+            }
         }
-        // if(wavecount > 10)wave += 1;
         this.y += this.speedy;
     }
 enemy.prototype.isColliding = function(bodyb){
