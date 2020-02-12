@@ -13,12 +13,13 @@ canvas {
 	margin-left: 40px;
 }
 #gameDialogue{
+  text-align: center;
   line-height: 20px;
   font-size: 70px;
   font-family: "Comic Sans MS", cursive, sans-serif;
-  margin-left: 80px;
+  width: 800px;
+  margin-left: 120px;
   color:  #ffee00;
   position: absolute;
-  text-align: center;
   visibility: hidden;
 }

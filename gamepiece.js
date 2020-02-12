@@ -3,7 +3,7 @@
 var friction = 0.98;
 var canfire = true;
 
-function gamepiece(img, x, y, width, height, speedx, speedy){
+function Chopper(img, x, y, width, height, speedx, speedy){
     this.img;
     this.x = x;
     this.y = y;
@@ -15,25 +15,25 @@ function gamepiece(img, x, y, width, height, speedx, speedy){
     this.vely = 0;
     this.animcount = 0;
 }
-gamepiece.prototype.addimage = function (imagename) {
+Chopper.prototype.addimage = function (imagename) {
     this.img = new Image();
     let thissrc = ("./img/" + imagename + ".png")
     this.img.src = (thissrc);
     // this.img = imagename;
 }
-gamepiece.prototype.draw = function(ctx){
+Chopper.prototype.draw = function(ctx){
     let frame = Math.floor(this.animcount);
     let chopx = frame * 237;
     ctx.drawImage(this.img, chopx,0, 237, 75, this.x, this.y, 104, 33);
     // ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    this.animcount += .4;
+    this.animcount += .3;
     if(this.animcount >3)this.animcount = 0;
     if(this.height == 33){
         //     console.log(this.img);
     }
 
 }
-gamepiece.prototype.checkborder = function() {
+Chopper.prototype.checkborder = function() {
     if(this.x + this.width > canvas.width){
         this.velx *= -.8;
     }else if(this.x < 0){
@@ -45,10 +45,10 @@ gamepiece.prototype.checkborder = function() {
         this.vely *= -1;
     }
 }
-gamepiece.prototype.startkeyboard = function(){
+Chopper.prototype.startkeyboard = function(){
     keyboard.listen(document);
 }
-gamepiece.prototype.fly = function(){
+Chopper.prototype.fly = function(){
     
     let direction = keyboard.whichkey();
     // console.log(direction);
@@ -106,7 +106,7 @@ gamepiece.prototype.fly = function(){
     this.velx *= friction;
     this.vely *= friction;
 }
-gamepiece.prototype.collision = function(bodyb){
+Chopper.prototype.collision = function(bodyb){
     if (this.x < bodyb.x + bodyb.width &&
         this.x + this.width > bodyb.x &&
         this.y < bodyb.y + bodyb.height &&

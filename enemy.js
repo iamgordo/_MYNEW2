@@ -21,12 +21,15 @@ enemy.prototype.update = function(){
         if(this.x > -56){
             this.x += this.speedx;
         }else{
+            wavecount += 1;
+            console.log(wavecount);
             // beginning of game pause/dialogue
             // state = "pause";
             // enemy.dialogue();
             this.x = 850;
             this.y = Math.random()*350 + 75;
         }
+        // if(wavecount > 10)wave += 1;
         this.y += this.speedy;
     }
 enemy.prototype.isColliding = function(bodyb){

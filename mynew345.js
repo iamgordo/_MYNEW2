@@ -5,7 +5,7 @@ var player;
 let bullets = [];
 let enemies = [];
 let biplanes = [];
-var oneenemy, twoenemy, threeenemy, fourenemy;
+var oneenemy, twoenemy, threeenemy, fourenemy, fiveenemy;
 var ground1, ground2, ground3, bullet, wall1, wall2, wall3, fuel;
 var screenarea, dialogue;
 let state = "play";
@@ -32,7 +32,7 @@ function start () {
     screenarea = document.getElementById("gameArea");
 
 
-    chopper = new gamepiece("", 300, 150, 104, 33, .15, .15);
+    chopper = new Chopper("", 300, 150, 104, 33, .15, .15);
     chopper.addimage("heli-1a");
 
     ground1 = new ground("mountain", 900, 430, 498, 163, -0.8);
@@ -41,7 +41,7 @@ function start () {
 
     wall1 = new ground("wallmine", 1050, 493, 100, 100, -0.8);
 
-    fuel = new ground("fuel", 850, 540, 63, 39, -0.8);
+    fuel = new ground("fuel2", 850, 540, 57, 37, -0.8);
     
     if(wave === 1){
         for(let i = 0; i < 5; i++){
@@ -55,7 +55,7 @@ function init(e){
     chopper.startkeyboard();
     gameLoop();
 }
-document.addEventListener( 'DOMContentLoaded', start);
+// document.addEventListener( 'DOMContentLoaded', start);
 // cant do inertia, head swimming
 function update () {
     // robot.checkborder();
@@ -91,6 +91,7 @@ function update () {
                 biplanes[i].speedy = 6;
                 biplanes[i].speedx = -2;
                 wavecount += 1;
+                console.log(wavecount);
                 if(wavecount > 5){
                     wave+=1;
                     wavecount = 0;
@@ -101,6 +102,7 @@ function update () {
                         twoenemy = new enemy("fireball", 1600, 100, 66, 18, -6, 0);
                         threeenemy = new enemy("fireball", 2000, 300, 66, 18, -6, 0);
                         fourenemy = new enemy("fireball", 2400, 400, 66, 18, -6, 0);
+                        fiveenemy = new enemy("fireball", 1800, 300, 66, 18, -6, 0);
                     }
                 }
             }
@@ -116,6 +118,7 @@ function update () {
         twoenemy.update();
         threeenemy.update();
         fourenemy.update();
+        fiveenemy.update();
         // if(chopper.collision(oneenemy))console.log("HIT");
     }
     ground1.move();
@@ -159,6 +162,7 @@ function draw () {
         twoenemy.draw(canvasContext);
         threeenemy.draw(canvasContext);
         fourenemy.draw(canvasContext);
+        fiveenemy.draw(canvasContext);
     }
     
     chopper.draw(canvasContext);
