@@ -1,0 +1,5 @@
+
+
+
+1. Common class for enemies.
+2. Figure out way to make many of one thing without having to name each one.

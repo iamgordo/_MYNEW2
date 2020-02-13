@@ -6,25 +6,23 @@ let bullets = [];
 let enemies = [];
 let biplanes = [];
 var oneenemy, twoenemy, threeenemy, fourenemy, fiveenemy, sixenemy;
-var ground1, ground2, ground3, bullet, wall1, wall2, wall3, fuel;
+var ground1, ground2, ground3, bullet, wall1, wall2, wall3, fuel, building;
 var screenarea, dialogue;
 let state = "play";
 let wave = 1;
 let wavecount = 0;
 let wavechange = false;
 
-var aslug = new Image();
-aslug.src = ("./img/bullet.png");
-
 var images = {
     biplane: new Image(),
     fuel: new Image(),
+    aslug: new Image(),
 }
 
 function start () {
     images.biplane.src = ("./img/Biplane.png");
     images.fuel.src = ("./img/fuel.png");
-
+    images.aslug.src = ("./img/bullet.png");
     canvas = document.getElementById("myCanvas");
     canvasContext = canvas.getContext("2d");
     screentext.show("Click to start!!", "#ff9900", "bold 60px Tahoma", "center", canvas.width / 2, canvas.height / 3);
@@ -41,11 +39,12 @@ function start () {
 
     wall1 = new ground("wallmine", 1050, 493, 100, 100, -0.8);
 
+    building = new ground("building", 500, 514, 199, 66, -0.8);
     fuel = new ground("fuel2", 850, 545, 57, 37, -0.8);
     
     if(wave === 1){
         for(let i = 0; i < 5; i++){
-            let thisplane = new biplane(images, 800 + i * 200, Math.random()*400 + 50, 73, 37, -4, 0);
+            let thisplane = new biplane(images.biplane, 800 + i * 200, Math.random()*400 + 50, 73, 37, -4, 0);
         }
     }
     screenarea.addEventListener('click', init);
@@ -106,10 +105,14 @@ function update () {
                 bullets.splice(j, 1);
                 // biplanes.splice(i, 1);
                 biplanes[i].speedy = 6;
-                biplanes[i].speedx = -1;
+                biplanes[i].speedx = 1;
             }
         }
     }
+    // if(wave === 3 && wavechange){
+    //     // wavechange = false;
+    //     // todo
+    // }
     for(let i=0; i < bullets.length; i++){
         bullets[i].x += bullets[i].speedx;
         bullets[i].y += bullets[i].speedy;
@@ -129,11 +132,15 @@ function update () {
         }
         // if(chopper.collision(oneenemy))console.log("HIT");
     }
+    if(wave === 3){
+        oneenemy.update();
+    }
     ground1.move();
     ground2.move();
     ground3.move();
     wall1.move();
     fuel.move();
+    building.move();
 
     if(chopper.collision(wall1)){
         state = "gover";
@@ -157,6 +164,9 @@ function newgame(){
 }
 function timesup(){
     wavechange = false;
+    
+    if(wave === 3)oneenemy = new enemy("eaglemine", 800, 200, 153, 32, -6, 0);
+    // draw new wave
 }
 function draw () {
     ground1.draw(canvasContext);
@@ -164,6 +174,7 @@ function draw () {
     ground3.draw(canvasContext);
     wall1.draw(canvasContext);
     fuel.draw(canvasContext);
+    building.draw(canvasContext);
     if(wave === 2){
         oneenemy.draw(canvasContext);
         twoenemy.draw(canvasContext);
@@ -171,20 +182,26 @@ function draw () {
         fourenemy.draw(canvasContext);
         fiveenemy.draw(canvasContext);
     }
-    if(wave === 3){
-        console.log(wave + "wave");
-        
+    if(wave === 3 ){
+        oneenemy.draw(canvasContext);
     }
 
     chopper.draw(canvasContext);
     if(wavechange)screentext.show("Wave: " + wave, "#ffff00", "bold 30px Tahoma", "center", canvas.width / 2, canvas.height / 2 - 200);
     for(let i = 0; i < bullets.length; i++){
-        canvasContext.drawImage(aslug, bullets[i].x, bullets[i].y);
+        canvasContext.drawImage(images.aslug, bullets[i].x, bullets[i].y);
     }
     for(let i = 0; i < biplanes.length; i++){
+        // below in preparation for rotating crash
+        // ctx.save();
+        // ctx.translate(this.x, this.y); // actual x and y
+        // ctx.translate(this.width / 2,this.height / 2);
+        // ctx.rotate(Math.PI / 180);
+        // ctx.drawImage(this.img, -this.width / 2, -this.height / 2,this.width, this.height);
+        // //large asteroid
+        // ctx.restore();
         canvasContext.drawImage(images.biplane, biplanes[i].x, biplanes[i].y, biplanes[i].width, biplanes[i].height);
     }
-    
 }
 function gameLoop () {
     canvasContext.fillStyle = "#336699";

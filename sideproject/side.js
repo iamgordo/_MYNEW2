@@ -4,12 +4,14 @@ var canvasContext = undefined;
 var fireball = new Image();
 fireball.src = "./img/fireball.png";
 var ball = new newimage(fireball, 800, 200, 75, 20, -1, 0);
-
+var count = 0;
 
 function start () {
     canvas = document.getElementById("myCanvas");
-    canvasContext = canvas.getContext("2d");
+    ctx = canvas.getContext("2d");
 
+    ctx.font = "30px Arial";
+    ctx.strokeText("Hello World",10,50);
 
     screenarea =document.getElementById("gameArea");
     screenarea.addEventListener('click', init);
@@ -23,15 +25,24 @@ document.addEventListener( 'DOMContentLoaded', start);
 function update () {
     ball.x += ball.speedx;
     ball.y += ball.speedy;
+    count += 2;
 }
 function draw(){
-    // canvasContext.drawImage(fireball, 200, 200, 75, 20);
-    canvasContext.drawImage(ball.img, ball.x, ball.y, ball.width, ball.height);
+    // ctx.drawImage(fireball, 200, 200, 75, 20);
+    ctx.save();
+        // 112 x 36
+        ctx.translate(200, 200); // actual x and y
+        ctx.translate(112 / 2,36 / 2);
+        ctx.rotate(count * Math.PI / 180);
+        ctx.drawImage(fireball, -112 / 2, -36 / 2,112, 36);
+        //large asteroid
+        ctx.restore();
+    // ctx.drawImage(ball.img, ball.x, ball.y, ball.width, ball.height);
 
 }
 function gameLoop () {
-    canvasContext.fillStyle = "#336699";
-    canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#336699";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     update();
     draw();
     requestAnimationFrame(gameLoop);

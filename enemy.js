@@ -15,10 +15,17 @@ function enemy(imagename, x, y, width, height, speedx, speedy){
     this.vely = 0;
 }
 enemy.prototype.draw = function (ctx) {
+        // ctx.save();
+        // ctx.translate(this.x, this.y); // actual x and y
+        // ctx.translate(this.width / 2,this.height / 2);
+        // ctx.rotate(Math.PI / 180);
+        // ctx.drawImage(this.img, -this.width / 2, -this.height / 2,this.width, this.height);
+        // //large asteroid
+        // ctx.restore();
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }    
 enemy.prototype.update = function(){
-        if(this.x > -56){
+        if(this.x > -this.width){
             this.x += this.speedx;
         }else{
             wavecount += 1;
@@ -26,7 +33,16 @@ enemy.prototype.update = function(){
             this.x = 850;
             this.y = Math.random()*470 + 20;
             if(wavecount > 20){
+
+            if(wave === 2) {
                 wave += 1;
+                wavechange = true;
+                // oneenemy = undefined;
+            }
+            if(wavechange){
+                screentext.show("Wave: " + wave, "#ffff00", "bold 30px Tahoma", "center", canvas.width / 2, canvas.height / 2 - 200);
+                setTimeout(timesup, 2000);
+            }
                 // console.log("wave: " + wave);
                 wavecount = 0;
             }
