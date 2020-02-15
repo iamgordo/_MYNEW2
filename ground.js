@@ -19,7 +19,7 @@ ground.prototype.draw = function(ctx){
     // console.log(this.y);
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     if(this.x < 0 - this.width){
-        this.x = 1000;
+        this.x = 1000 + this.width;
     }
 }
 ground.prototype.collide = function(bodyb){
