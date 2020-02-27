@@ -1,5 +1,7 @@
 var friction = 0.98;
 var canfire = true;
+var candrop = true;
+var abomb;
 
 function Chopper(img, x, y, width, height, speedx, speedy) {
     this.img;
@@ -12,6 +14,7 @@ function Chopper(img, x, y, width, height, speedx, speedy) {
     this.velx = 0;
     this.vely = 0;
     this.animcount = 0;
+    this.fuel = 100;
 }
 Chopper.prototype.addimage = function(imagename) {
     this.img = new Image();
@@ -23,13 +26,10 @@ Chopper.prototype.draw = function(ctx) {
     let frame = Math.floor(this.animcount);
     let chopx = frame * 237;
     ctx.drawImage(this.img, chopx, 0, 237, 75, this.x, this.y, 104, 33);
-    // ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     this.animcount += .3;
-    if (this.animcount > 3)
-        this.animcount = 0;
-    if (this.height == 33) {//     console.log(this.img);
-    }
-
+    if (this.animcount > 3)this.animcount = 0;
+    screentext.fuel(this.fuel);
+    this.fuel -= .04;
 }
 Chopper.prototype.checkborder = function() {
     if (this.x + this.width > canvas.width) {
@@ -42,6 +42,7 @@ Chopper.prototype.checkborder = function() {
     } else if (this.y < 0) {
         this.vely *= -1;
     }
+    
 }
 Chopper.prototype.startkeyboard = function() {
     keyboard.listen(document);
@@ -49,7 +50,6 @@ Chopper.prototype.startkeyboard = function() {
 Chopper.prototype.fly = function() {
 
     let direction = keyboard.whichkey();
-    // console.log(direction);
     if (direction === "left") {
         this.velx -= this.speedx;
         this.velx /= friction;
@@ -89,15 +89,26 @@ Chopper.prototype.fly = function() {
         this.vely /= friction;
         this.velx /= friction;
     }
-    if (keys[32] && canfire) {
-        keys[32] = false;
+    if (keys[65] && canfire) {
+        keys[65] = false;
         canfire = false;
         slug("bullet", this.x + 85, this.y + 30, 5, 3, 14, 0);
         setTimeout(function() {
-            //your code to be executed after 1 second
             canfire = true;
         }, 100);
     }
+    if(keys[90] && candrop){
+        keys[90]= false;
+        candrop = false;
+        abomb = new bomb(this.x + this.width/2, this.y + this.height, this.velx);
+    }
+    // var Keys = {
+    //     A: 65, B: 66, C: 67, D: 68, E: 69, F: 70,
+    //     G: 71, H: 72, I: 73, J: 74, K: 75, L: 76,
+    //     M: 77, N: 78, O: 79, P: 80, Q: 81, R: 82,
+    //     S: 83, T: 84, U: 85, V: 86, W: 87, X: 88,
+    //     Y: 89, Z: 90
+    //     };
     this.x += this.velx;
     this.y += this.vely;
     this.velx *= friction;
